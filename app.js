@@ -1,12 +1,13 @@
 const canvas = document.getElementById("jsCanvas");
 const ctx = canvas.getContext("2d");
 const colors = document.getElementsByClassName("jsColor");
-
+const range = document.getElementById("jsRange");
 //We need to set the widht and height in JS (separate from CSS),
 //so that JS knows where to get the 2d context from.
 canvas.width = 500;
 canvas.height = 500;
-ctx.strokeStyle = "#1b15b9";
+ctx.strokeStyle = "black";
+ctx.lineWidth = range.value;
 let painting = false;
 
 function stopPainting() {
@@ -35,6 +36,11 @@ function handleColorClick(event) {
   ctx.strokeStyle = color;
 }
 
+function handleRange(event) {
+  const width = event.target.value;
+  ctx.lineWidth = width;
+  console.log(width);
+}
 function init() {
   if (canvas) {
     canvas.addEventListener("mousemove", onMouseMove);
@@ -45,6 +51,9 @@ function init() {
   Array.from(colors).forEach((color) =>
     color.addEventListener("click", handleColorClick)
   );
+  if (range) {
+    range.addEventListener("input", handleRange);
+  }
 }
 
 init();
