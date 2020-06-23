@@ -3,13 +3,19 @@ const ctx = canvas.getContext("2d");
 const colors = document.getElementsByClassName("jsColor");
 const range = document.getElementById("jsRange");
 const mode = document.getElementById("jsMode");
+const save = document.getElementById("jsSave");
 
 //We need to set the widht and height in JS (separate from CSS),
 //so that JS knows where to get the 2d context from.
 canvas.width = 500;
 canvas.height = 500;
+
 ctx.strokeStyle = "black";
 ctx.lineWidth = range.value;
+
+ctx.fillStyle = "white";
+ctx.fillRect(0, 0, canvas.width, canvas.height);
+ctx.fillStyle = "black";
 
 let painting = false;
 let filling = false;
@@ -66,6 +72,18 @@ function onMounseClick() {
   }
 }
 
+function onRightClick(event) {
+  event.preventDefault();
+}
+
+function handleSaveClick() {
+  const image = canvas.toDataURL(); //default is png
+  const a = document.createElement("a");
+  a.href = image;
+  a.download = "image🎨";
+  a.click(); //this method fires click event
+}
+
 function init() {
   if (canvas) {
     canvas.addEventListener("mousemove", onMouseMove);
@@ -73,6 +91,7 @@ function init() {
     canvas.addEventListener("mouseup", stopPainting);
     canvas.addEventListener("mouseleave", stopPainting);
     canvas.addEventListener("click", onMounseClick);
+    canvas.addEventListener("contextmenu", onRightClick);
   }
   Array.from(colors).forEach((color) =>
     color.addEventListener("click", handleColorClick)
@@ -82,6 +101,9 @@ function init() {
   }
   if (mode) {
     mode.addEventListener("click", handleModeClick);
+  }
+  if (save) {
+    save.addEventListener("click", handleSaveClick);
   }
 }
 
